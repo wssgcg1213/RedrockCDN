@@ -43,7 +43,7 @@ router.get('/cdn/js*', function(req, res){
                             data += result[querys[i]];
                         }
                         res.writeHead(200, {'Content-Type': 'application/javascript'});
-                        res.end(data);
+                        return res.end(data);
                     }
                 });
             });
@@ -59,7 +59,7 @@ router.get('/cdn/css/:cssname', function(req, res) {
         if(err){
             console.log('css readfile error', err);
             res.writeHead(404);
-            res.end('/* error: file not found */');
+            return res.end('/* error: file not found */');
         }
         res.writeHead(200, {'Content-Type': 'text/css'});
         res.end(file);
