@@ -17,10 +17,10 @@ router.get('/cdn/js/:jsname', function(req, res) {
    fs.readFile('js_components/' + jsname, function(err, file){
        if(err){
            console.log('css readfile error', err);
-           res.writeHead(404);
-           res.end('//no this file');
+           // res.writeHead(404);
+           return res.end('//no this file');
        }
-       res.end(file);
+       return res.end(file);
    });
 });
 
@@ -34,7 +34,7 @@ router.get('/cdn/js*', function(req, res){
             querys.forEach(function(name){
                 fs.readFile('js_components/' + name, function (err, content){
                     if(err){
-                        res.writeHead(404);
+                        // res.writeHead(404);
                         return res.end('//can not find file: ' + name);
                     }
                     result[name] = content;
@@ -45,8 +45,8 @@ router.get('/cdn/js*', function(req, res){
                         for(var i = 0, len = flag; i < flag; i++){
                             data += result[querys[i]];
                         }
-                        res.writeHead(200, {'Content-Type': 'application/javascript'});
-                        res.end(data);
+                        res.setHeader('Content-Type', 'application/javascript');
+                        return res.end(data);
                     }
                 });
             });
@@ -61,11 +61,11 @@ router.get('/cdn/css/:cssname', function(req, res) {
     fs.readFile('css_components/' + css, function(err, file){
         if(err){
             console.log('css readfile error', err);
-            res.writeHead(404);
-            res.end('/* error: file not found */');
+            // res.writeHead(404);
+            return res.end('/* error: file not found */');
         }
-        res.writeHead(200, {'Content-Type': 'text/css'});
-        res.end(file);
+        res.setHeader('Content-Type', 'text/css');
+        return res.end(file);
     });
 });
 
@@ -79,7 +79,7 @@ router.get('/cdn/css*', function(req, res){
             querys.forEach(function(name){
                 fs.readFile('css_components/' + name, function (err, content){
                     if(err){
-                        res.writeHead(404);
+                        // res.writeHead(404);
                         return res.end('/*can not find file: ' + name + '*/');
                     }
                     result[name] = content;
@@ -90,8 +90,8 @@ router.get('/cdn/css*', function(req, res){
                         for(var i = 0, len = flag; i < flag; i++){
                             data += result[querys[i]];
                         }
-                        res.writeHead(200, {'Content-Type': 'text/css'});
-                        res.end(data);
+                        res.setHeader('Content-Type', 'text/css');
+                        return res.end(data);
                     }
                 });
             });
@@ -148,7 +148,7 @@ router.post('/cdn/upload', function (req, res) {
                     if(data.length == fileStr.length){
                         urlString = urlString.join("") + fileStr.join(",");
 
-                        res.render('success', {type: type, minName: urlString});
+                        return res.render('success', {type: type, minName: urlString});
                     }
                 });
             }());
